@@ -9,3 +9,5 @@ EditorBuildSettings:
     path: Assets/Main Menu.unity
   - enabled: 1
     path: Assets/Extras.unity
+  - enabled: 1
+    path: Assets/Options.unity
