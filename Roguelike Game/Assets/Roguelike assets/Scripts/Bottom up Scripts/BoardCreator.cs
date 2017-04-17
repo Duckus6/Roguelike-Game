@@ -16,6 +16,7 @@ public class BoardCreator : MonoBehaviour
 	public IntRange roomWidth = new IntRange (3, 10);         // The range of widths rooms can have.
 	public IntRange roomHeight = new IntRange (3, 10);        // The range of heights rooms can have.
 	public IntRange corridorLength = new IntRange (6, 10);    // The range of lengths corridors between rooms can have.
+	public IntRange numEnemies = new IntRange (1,3);
 	public GameObject[] floorTiles;                           // An array of floor tile prefabs.
 	public GameObject[] wallTiles;                            // An array of wall tile prefabs.
 	public GameObject[] outerWallTiles;                       // An array of outer wall tile prefabs.
@@ -25,10 +26,11 @@ public class BoardCreator : MonoBehaviour
 	private Room[] rooms;                                     // All the rooms that are created for this board.
 	private Corridor[] corridors;                             // All the corridors that connect the rooms.
 	private GameObject boardHolder;                           // GameObject that acts as a container for all other tiles.
-	public GameObject Player; 
 
-	private void Start ()
+
+	public void Setup (int level)
 	{
+		
 		// Create the board holder.
 		boardHolder = new GameObject("BoardHolder");
 
@@ -99,11 +101,6 @@ public class BoardCreator : MonoBehaviour
 				Vector3 playerPos = new Vector3 (rooms[i].xPos, rooms[i].yPos, 0);
 				Instantiate(player, playerPos, Quaternion.identity);
 			}
-
-			if (i == rooms.Length * 0.5) {
-				Vector3 PlayerPos = new Vector3 (rooms [i].xPos, rooms [i].yPos, 0);
-					Instantiate(player, PlayerPos, Quaternion.identity);
-			}
 		}
 
 	}
@@ -125,10 +122,9 @@ public class BoardCreator : MonoBehaviour
 				for (int k = 0; k < currentRoom.roomHeight; k++)
 				{
 					int yCoord = currentRoom.yPos + k;
-
 					// The coordinates in the jagged array are based on the room's position and it's width and height.
 					tiles[xCoord][yCoord] = TileType.Floor;
-				}
+				}	//if ((i == rooms.Length-1)&&(j == currentRoom.roomHeight
 			}
 		}
 	}
@@ -211,7 +207,7 @@ public class BoardCreator : MonoBehaviour
 		InstantiateHorizontalOuterWall(leftEdgeX + 1f, rightEdgeX - 1f, topEdgeY);
 	}
 
-	//instantiate the vertical outer walls
+
 	void InstantiateVerticalOuterWall (float xCoord, float startingY, float endingY)
 	{
 		// Start the loop at the starting value for Y.
