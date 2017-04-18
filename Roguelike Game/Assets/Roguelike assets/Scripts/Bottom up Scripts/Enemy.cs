@@ -5,16 +5,17 @@ using UnityEngine;
 public class Enemy : MovingObject {
 
 	public IntRange Damage = new IntRange(1,3);
+	public int health = 3;
 	private Transform target;
 	// Use this for initialization
 	protected override void Start () 
 	{
+		GameManager.instance.AddEnemiesToList (this);
 		target = GameObject.FindGameObjectWithTag ("Player").transform;
 	}
-	
-	// Update is called once per frame
-	void Update () 
+	protected override void AttemptMove <T> (int xDir, int yDir)
 	{
+		base.AttemptMove <T> (xDir, yDir);
 	}
 	public void MoveEnemy()
 	{
