@@ -101,7 +101,7 @@ public class BoardCreator : MonoBehaviour
 				corridors[i].SetupCorridor(rooms[i], corridorLength, roomWidth, roomHeight, columns, rows, false);
 			}
 
-			if (i == rooms.Length *.5f)
+			if (i == Mathf.Floor(rooms.Length *.5f))
 			{
 				Vector3 playerPos = new Vector3 (rooms[i].xPos, rooms[i].yPos, 0);
 				Instantiate(player, playerPos, Quaternion.identity);
@@ -109,7 +109,7 @@ public class BoardCreator : MonoBehaviour
 		}
 		for (int j = 0; j < numEnemies.Random; j++) 
 		{
-			if (j != rooms.Length*.5f)
+			if (j != Mathf.Floor(rooms.Length*.5f))
 			{
 				Vector3 enemyPos = new Vector3 (rooms [j].xPos, rooms [j].yPos, 0);
 				Instantiate (enemy, enemyPos, Quaternion.identity);

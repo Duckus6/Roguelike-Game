@@ -18,10 +18,9 @@ public abstract class MovingObject : MonoBehaviour
 	{
 		//Get a component reference to this object's BoxCollider2D
 		boxCollider = GetComponent <BoxCollider2D> ();
-
 		//Get a component reference to this object's Rigidbody2D
 		rb2D = GetComponent <Rigidbody2D> ();
-
+		boxCollider.enabled = true;
 		//By storing the reciprocal of the move time we can use it by multiplying instead of dividing, this is more efficient.
 		inverseMoveTime = 1f / moveTime;
 	}
@@ -36,7 +35,6 @@ public abstract class MovingObject : MonoBehaviour
 
 		// Calculate end position based on the direction parameters passed in when calling Move.
 		Vector2 end = start + new Vector2 (xDir, yDir);
-
 		//Disable the boxCollider so that linecast doesn't hit this object's own collider.
 		boxCollider.enabled = false;
 
@@ -44,7 +42,7 @@ public abstract class MovingObject : MonoBehaviour
 		hit = Physics2D.Linecast (start, end, blockingLayer);
 
 		//Re-enable boxCollider after linecast
-		boxCollider.enabled = true;
+	//	boxCollider.enabled = true;
 
 		//Check if anything was hit
 		if(hit.transform == null)
