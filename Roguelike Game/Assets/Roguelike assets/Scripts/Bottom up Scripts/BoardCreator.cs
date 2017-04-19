@@ -9,32 +9,37 @@ public class BoardCreator : MonoBehaviour
 		Wall, Floor,
 	}
 
-
-	public int columns = 100;                                 // The number of columns on the board (how wide it will be).
-	public int rows = 100;                                    // The number of rows on the board (how tall it will be).
-	public IntRange numRooms = new IntRange (15, 20);         // The range of the number of rooms there can be.
-	public IntRange roomWidth = new IntRange (3, 10);         // The range of widths rooms can have.
-	public IntRange roomHeight = new IntRange (3, 10);        // The range of heights rooms can have.
-	public IntRange corridorLength = new IntRange (6, 10);    // The range of lengths corridors between rooms can have.
+	//Dimensions of the board
+	public int columns = 100;
+	public int rows = 100;
+	//Random int values used for number of rooms, (random) dimensions of rooms, length of corridors and number of Enemies
+	public IntRange numRooms = new IntRange (15, 20);         
+	public IntRange roomWidth = new IntRange (3, 10);         
+	public IntRange roomHeight = new IntRange (3, 10);        
+	public IntRange corridorLength = new IntRange (6, 10);    
 	public IntRange numEnemies = new IntRange (0,5);
-	public GameObject[] floorTiles;                           // An array of floor tile prefabs.
-	public GameObject[] wallTiles;                            // An array of wall tile prefabs.
-	public GameObject[] outerWallTiles;                       // An array of outer wall tile prefabs.
+	//Arrays for floor,wall and outer wall prefabs respectively
+	public GameObject[] floorTiles;                           
+	public GameObject[] wallTiles;                            
+	public GameObject[] outerWallTiles;
+	//Objects to store the player and enemy prefabs in
 	public GameObject player;
 	public GameObject enemy;
-
-	private TileType[][] tiles;                               // A jagged array of tile types representing the board, like a grid.
-	private Room[] rooms;                                     // All the rooms that are created for this board.
-	private Corridor[] corridors;                             // All the corridors that connect the rooms.
-	private GameObject boardHolder;                           // GameObject that acts as a container for all other tiles.
+	//Array to represent the board
+	private TileType[][] tiles;
+	//Arrays to store the rooms and corridors respectively
+	private Room[] rooms;
+	private Corridor[] corridors;
+	//Game Object that contains all the tiles on the board
+	private GameObject boardHolder;
 
 
 	public void Setup (int level)
 	{
 		
-		// Create the board holder.
+		//Create the board holder.
 		boardHolder = new GameObject("BoardHolder");
-
+		//Sets up the rest of the board, tiles and instantiates the player/enemy prefabs
 		SetupTilesArray ();
 
 		CreateRoomsAndCorridors ();
@@ -49,13 +54,12 @@ public class BoardCreator : MonoBehaviour
 
 	void SetupTilesArray ()
 	{
-		// Set the tiles jagged array to the correct width.
+		//Set the tiles array to the correct width.
 		tiles = new TileType[columns][];
 
-		// Go through all the tile arrays...
+		//sets each tile array to the correct height
 		for (int i = 0; i < tiles.Length; i++)
 		{
-			// ... and set each tile array is the correct height.
 			tiles[i] = new TileType[rows];
 		}
 	}
