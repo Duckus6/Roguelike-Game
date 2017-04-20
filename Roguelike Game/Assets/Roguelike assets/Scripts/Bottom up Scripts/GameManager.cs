@@ -1,17 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
 	public float TurnDelay = .1f;
+	public float levelStartDelay = 2f;
 	public static GameManager instance = null;
 	public int playerHP = 10;
 	public int Level = 1;
 	public int playerLevel = 1;
 	[HideInInspector] public bool playersTurn = true;
+
+	private Text levelText;
 	private BoardCreator Boardscript;
 	private List <Enemy> enemies;
 	private bool enemiesMoving;
+	private bool doingSetup;
 	void Awake()
 	{
 		if (instance == null)
@@ -20,8 +25,23 @@ public class GameManager : MonoBehaviour
 			Destroy (gameObject);
 		DontDestroyOnLoad (gameObject);
 		Boardscript = GetComponent<BoardCreator> ();
-		Boardscript.Setup (Level);
 		enemies = new List<Enemy>();
+		InitGame ();
+	}
+	private void OnLevelWasLoaded(int index)
+	{
+		Level++;
+		InitGame ();
+	}
+
+	void InitGame()
+	{
+		doingSetup = true;
+		levelText = GameObject.Find ("Level Text").GetComponent<Text> ();
+		levelText.text = "Level:" + Level.ToString();
+		enemies.Clear();
+		Boardscript.Setup (Level);
+		doingSetup = false;
 	}
 	void Update()
 	{

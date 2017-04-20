@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Enemy : MovingObject {
 
@@ -12,6 +13,7 @@ public class Enemy : MovingObject {
 	{
 		GameManager.instance.AddEnemiesToList (this);
 		target = GameObject.FindGameObjectWithTag ("Player").transform;
+		base.Start ();
 	}
 	protected override void AttemptMove <T> (int xDir, int yDir)
 	{

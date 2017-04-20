@@ -32,17 +32,19 @@ public abstract class MovingObject : MonoBehaviour
 	{
 		//Store start position to move from, based on objects current transform position.
 		Vector2 start = transform.position;
-
+		Vector2 Vect = new Vector2 (xDir, yDir);
 		// Calculate end position based on the direction parameters passed in when calling Move.
-		Vector2 end = start + new Vector2 (xDir, yDir);
+		Vector2 end = start + Vect;
 		//Disable the boxCollider so that linecast doesn't hit this object's own collider.
+		//if (boxCollider)
+		//	Debug.Log ("No Error");
 		boxCollider.enabled = false;
 
 		//Cast a line from start point to end point checking collision on blockingLayer.
-		hit = Physics2D.Linecast (start, end, blockingLayer);
 
+		hit = Physics2D.Linecast (start, end, blockingLayer);
 		//Re-enable boxCollider after linecast
-	//	boxCollider.enabled = true;
+		boxCollider.enabled = true;
 
 		//Check if anything was hit
 		if(hit.transform == null)

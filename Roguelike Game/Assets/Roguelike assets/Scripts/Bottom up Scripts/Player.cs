@@ -1,17 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class Player : MovingObject
 {
 	public float restartLevelDelay = 1f;
 	public int basedamage = 2;
 	private int health;
-
+	public Text healthText;
+	public int playerLevel = GameManager.instance.playerLevel;
 	protected override void Start()
 	{
 		health = GameManager.instance.playerHP;
 		base.Start();
-
+		healthText.text = "Health:" + health;
 	}
 
 	private void OnDisable()
