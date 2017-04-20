@@ -67,46 +67,47 @@ public class BoardCreator : MonoBehaviour
 
 	void CreateRoomsAndCorridors ()
 	{
-		// Create the rooms array with a random size.
+		//Create the rooms array with a random size specified earlier.
 		rooms = new Room[numRooms.Random];
 
-		// There should be one less corridor than there is rooms.
+		//One less corridor than rooms so all rooms connecting
 		corridors = new Corridor[rooms.Length - 1];
 
-		// Create the first room and corridor.
+		//Creates the first room and corridor.
 		rooms[0] = new Room ();
 		corridors[0] = new Corridor ();
 
-		// Setup the first room, there is no previous corridor so we do not use one.
+		//Setup the first room, No previous corridor so no parameter past
 		rooms[0].SetupRoom(roomWidth, roomHeight, columns, rows);
 
-		// Setup the first corridor using the first room.
+		//Setup the first corridor using the first room.
 		corridors[0].SetupCorridor(rooms[0], corridorLength, roomWidth, roomHeight, columns, rows, true);
-
+                //Creates all remaining rooms and corridors
 		for (int i = 1; i < rooms.Length; i++)
 		{
-			// Create a room.
 			rooms[i] = new Room ();
 
-			// Setup the room based on the previous corridor.
+			
 			rooms[i].SetupRoom (roomWidth, roomHeight, columns, rows, corridors[i - 1]);
 
-			// If we haven't reached the end of the corridors array...
+			
 			if (i < corridors.Length)
 			{
-				// ... create a corridor.
+				
 				corridors[i] = new Corridor ();
 
-				// Setup the corridor based on the room that was just created.
+				
 				corridors[i].SetupCorridor(rooms[i], corridorLength, roomWidth, roomHeight, columns, rows, false);
 			}
-
+                        // Instantiates the player  at approx the middke board
 			if (i == Mathf.Floor(rooms.Length *.5f))
 			{
 				Vector3 playerPos = new Vector3 (rooms[i].xPos, rooms[i].yPos, 0);
 				Instantiate(player, playerPos, Quaternion.identity);
 			}
 		}
+		
+		
 		for (int j = 0; j < numEnemies.Random; j++) 
 		{
 			if (j != Mathf.Floor(rooms.Length*.5f))
@@ -118,24 +119,24 @@ public class BoardCreator : MonoBehaviour
 
 	}
 
-
+        // Sets up tiles for the rooms
 	void SetTilesValuesForRooms ()
 	{
-		// Go through all the rooms...
+		
 		for (int i = 0; i < rooms.Length; i++)
 		{
 			Room currentRoom = rooms[i];
 
-			// ... and for each room go through it's width.
+			
 			for (int j = 0; j < currentRoom.roomWidth; j++)
 			{
 				int xCoord = currentRoom.xPos + j;
 
-				// For each horizontal tile, go up vertically through the room's height.
+				
 				for (int k = 0; k < currentRoom.roomHeight; k++)
 				{
 					int yCoord = currentRoom.yPos + k;
-					// The coordinates in the jagged array are based on the room's position and it's width and height.
+					
 					tiles[xCoord][yCoord] = TileType.Floor;
 				}	//if ((i == rooms.Length-1)&&(j == currentRoom.roomHeight
 			}
