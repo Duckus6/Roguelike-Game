@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class BoardCreator : MonoBehaviour
 {
@@ -25,6 +26,8 @@ public class BoardCreator : MonoBehaviour
 	//Objects to store the player and enemy prefabs in
 	public GameObject player;
 	public GameObject enemy;
+	//Game Object for the exit tile
+	public GameObject Exit;
 	//Array to represent the board
 	private TileType[][] tiles;
 	//Arrays to store the rooms and corridors respectively
@@ -69,7 +72,7 @@ public class BoardCreator : MonoBehaviour
 	{
 		//Create the rooms array with a random size specified earlier.
 		rooms = new Room[numRooms.Random];
-
+		int roomlen = rooms.Length;
 		//One less corridor than rooms so all rooms connecting
 		corridors = new Corridor[rooms.Length - 1];
 
@@ -83,7 +86,7 @@ public class BoardCreator : MonoBehaviour
 		//Setup the first corridor using the first room.
 		corridors[0].SetupCorridor(rooms[0], corridorLength, roomWidth, roomHeight, columns, rows, true);
                 //Creates all remaining rooms and corridors
-		for (int i = 1; i < rooms.Length; i++)
+		for (int i = 1; i < roomlen; i++)
 		{
 			rooms[i] = new Room ();
 
@@ -100,7 +103,7 @@ public class BoardCreator : MonoBehaviour
 				corridors[i].SetupCorridor(rooms[i], corridorLength, roomWidth, roomHeight, columns, rows, false);
 			}
                         // Instantiates the player  at approx the middke board
-			if (i == Mathf.Floor(rooms.Length *.5f))
+			if (i == Mathf.Floor(roomlen *.5f))
 			{
 				Vector3 playerPos = new Vector3 (rooms[i].xPos, rooms[i].yPos, 0);
 				Instantiate(player, playerPos, Quaternion.identity);
@@ -110,12 +113,14 @@ public class BoardCreator : MonoBehaviour
 		
 		for (int j = 0; j < numEnemies.Random; j++) 
 		{
-			if (j != Mathf.Floor(rooms.Length*.5f))
+			if (j != Mathf.Floor(roomlen*.5f))
 			{
 				Vector3 enemyPos = new Vector3 (rooms [j].xPos, rooms [j].yPos, 0);
 				Instantiate (enemy, enemyPos, Quaternion.identity);
 			}
 		}
+		Vector3 exit = new Vector3 (rooms [roomlen - 1].xPos, rooms [roomlen - 1].yPos, 0);
+		Instantiate (Exit, exit, Quaternion.identity);
 
 	}
 

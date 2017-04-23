@@ -2,19 +2,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 	public float TurnDelay = .1f;
 	public float levelStartDelay = 2f;
 	public static GameManager instance = null;
 	public int playerHP = 10;
-	public int Level = 1;
+	public int Level = 0;
 	public int playerLevel = 1;
+	public float playerEXP = 0f;
+	public Text healthText;
 	[HideInInspector] public bool playersTurn = true;
 
 	private Text levelText;
 	private BoardCreator Boardscript;
-	private List <Enemy> enemies;
+	public List <Enemy> enemies;
 	private bool enemiesMoving;
 	private bool doingSetup;
 	void Awake()
@@ -26,14 +29,31 @@ public class GameManager : MonoBehaviour
 		DontDestroyOnLoad (gameObject);
 		Boardscript = GetComponent<BoardCreator> ();
 		enemies = new List<Enemy>();
-		InitGame ();
 	}
-	private void OnLevelWasLoaded(int index)
+	//This is called each time a scene is loaded.
+	void OnLevelFinishedLoading(Scene scene, LoadSceneMode
+		mode)
 	{
+		//Add one to our level number.
+		//Call InitGame to initialize our level.
+		InitGame();
 		Level++;
-		InitGame ();
 	}
-
+	void OnEnable()
+	{
+		//Tell our ‘OnLevelFinishedLoading’ function tostart listening for a scene change event as soon as this script is enabled.
+			SceneManager.sceneLoaded += OnLevelFinishedLoading;
+	}
+	void OnDisable()
+	{
+		//Tell our ‘OnLevelFinishedLoading’ function to stop listening for a scene change event as soon as this script is disabled.
+			//Remember to always have an unsubscription for every delegate you subscribe to!
+			SceneManager.sceneLoaded -= OnLevelFinishedLoading;
+	}
+	void destroyedenemy()
+	{
+		
+	}
 	void InitGame()
 	{
 		doingSetup = true;
@@ -41,13 +61,23 @@ public class GameManager : MonoBehaviour
 		levelText.text = "Level:" + Level.ToString();
 		enemies.Clear();
 		Boardscript.Setup (Level);
+		Invoke ("setup", levelStartDelay);
+	}
+	void setup()
+	{
 		doingSetup = false;
 	}
 	void Update()
 	{
-		if (playersTurn || enemiesMoving)
+		if (playersTurn || enemiesMoving|| doingSetup)
 			return;
 		StartCoroutine (MoveEnemies ());
+		healthText.text = "Health:" + playerHP;
+		if (playerEXP >= 1*playerLevel)
+		{
+			playerLevel += 1;
+			playerEXP -= 1*playerLevel;
+		}
 	}
 	public void AddEnemiesToList (Enemy script)
 	{

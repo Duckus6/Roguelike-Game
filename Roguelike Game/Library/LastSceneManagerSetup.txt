@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Roguelike assets/Scenes/Game.unity
+- path: Assets/Roguelike assets/Scenes/Main Menu.unity
   isLoaded: 1
   isActive: 1

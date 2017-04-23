@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class Player : MovingObject
@@ -7,13 +8,13 @@ public class Player : MovingObject
 	public float restartLevelDelay = 1f;
 	public int basedamage = 2;
 	private int health;
-	public Text healthText;
 	public int playerLevel = GameManager.instance.playerLevel;
+
 	protected override void Start()
 	{
 		health = GameManager.instance.playerHP;
+		health += 5*playerLevel ;
 		base.Start();
-		healthText.text = "Health:" + health;
 	}
 
 	private void OnDisable()
@@ -49,16 +50,23 @@ public class Player : MovingObject
 			//possible sound effects
 		}
 		CheckifGameOver ();
-		GameManager.instance.playersTurn = false;
+		List<Enemy> listenemies = GameManager.instance.enemies;
+		//if (listenemies == null) 
+		//{
+		//	GameManager.instance.playersTurn = true;
+		//}
+		//else
+			GameManager.instance.playersTurn = false;
 	}
 	protected override void OnCantMove <T> (T component)
 	{
-		//hitting enemy
+		Enemy hitEnemy = component as Enemy;
+		hitEnemy.LoseHealth (basedamage);
 	}
 	private void OnTriggerEnter2D (Collider2D other)
 	{
-		//check if collides with the staircase (Exit in example)
-		if (other.tag == "Stairs") {
+		//check if collides with the exit
+		if (other.tag == "Exit") {
 			Invoke ("Restart", restartLevelDelay);
 			enabled = false;
 		}
@@ -71,9 +79,14 @@ public class Player : MovingObject
 	{
 		SceneManager.LoadScene(3, LoadSceneMode.Single);
 	}
+	public int DamageEnemy()
+	{
+		return basedamage;
+	}
 	public void LoseHealth(int loss)
 	{
 		health -= loss;
+		GameManager.instance.playerHP = health;
 		CheckifGameOver ();
 	}
 	private void CheckifGameOver()
