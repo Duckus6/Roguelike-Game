@@ -31,8 +31,7 @@ public class GameManager : MonoBehaviour
 		enemies = new List<Enemy>();
 	}
 	//This is called each time a scene is loaded.
-	void OnLevelFinishedLoading(Scene scene, LoadSceneMode
-		mode)
+	void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
 	{
 		//Add one to our level number.
 		//Call InitGame to initialize our level.
@@ -72,6 +71,10 @@ public class GameManager : MonoBehaviour
 		if (playersTurn || enemiesMoving|| doingSetup)
 			return;
 		StartCoroutine (MoveEnemies ());
+		if (healthText == null) 
+		{
+			healthText = GameObject.Find ("Health Text").GetComponent<Text> ();
+		}
 		healthText.text = "Health:" + playerHP;
 		if (playerEXP >= 1*playerLevel)
 		{

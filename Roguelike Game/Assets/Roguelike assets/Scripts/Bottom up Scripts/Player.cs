@@ -14,6 +14,7 @@ public class Player : MovingObject
 	{
 		health = GameManager.instance.playerHP;
 		health += 5*playerLevel ;
+		GameManager.instance.playerHP = health;
 		base.Start();
 	}
 
@@ -51,12 +52,7 @@ public class Player : MovingObject
 		}
 		CheckifGameOver ();
 		List<Enemy> listenemies = GameManager.instance.enemies;
-		//if (listenemies == null) 
-		//{
-		//	GameManager.instance.playersTurn = true;
-		//}
-		//else
-			GameManager.instance.playersTurn = false;
+		GameManager.instance.playersTurn = false;
 	}
 	protected override void OnCantMove <T> (T component)
 	{

@@ -18,7 +18,7 @@ public class BoardCreator : MonoBehaviour
 	public IntRange roomWidth = new IntRange (3, 10);         
 	public IntRange roomHeight = new IntRange (3, 10);        
 	public IntRange corridorLength = new IntRange (6, 10);    
-	public IntRange numEnemies = new IntRange (0,5);
+	public IntRange numEnemies = new IntRange (1,6);
 	//Arrays for floor,wall and outer wall prefabs respectively
 	public GameObject[] floorTiles;                           
 	public GameObject[] wallTiles;                            
@@ -113,9 +113,10 @@ public class BoardCreator : MonoBehaviour
 		
 		for (int j = 0; j < numEnemies.Random; j++) 
 		{
-			if (j != Mathf.Floor(roomlen*.5f))
+			int x = Random.Range (0, roomlen - 1);
+			if (x != Mathf.Floor(roomlen*.5f))
 			{
-				Vector3 enemyPos = new Vector3 (rooms [j].xPos, rooms [j].yPos, 0);
+				Vector3 enemyPos = new Vector3 (rooms [x].xPos, rooms [x].yPos, 0);
 				Instantiate (enemy, enemyPos, Quaternion.identity);
 			}
 		}
