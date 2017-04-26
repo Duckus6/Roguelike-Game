@@ -13,6 +13,7 @@ public class Enemy : MovingObject {
 	protected override void Start () 
 	{
 		canAttack = true;
+		health += 2 * GameManager.instance.Level;
 		GameManager.instance.AddEnemiesToList (this);
 		target = GameObject.FindGameObjectWithTag ("Player").transform;
 		base.Start ();
@@ -45,7 +46,7 @@ public class Enemy : MovingObject {
 	{
 		Player hitPlayer = component as Player;
 		if (canAttack)
-			hitPlayer.LoseHealth (Damage.Random);
+			hitPlayer.LoseHealth ((Damage.Random)+GameManager.instance.Level);
 		else
 			hitPlayer.LoseHealth (0);
 	}

@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
 	public int playerLevel = 1;
 	public float playerEXP = 0f;
 	public Text healthText;
+	public Text EndGameText;
 	[HideInInspector] public bool playersTurn = true;
 
 	private Text levelText;
@@ -48,10 +49,6 @@ public class GameManager : MonoBehaviour
 		//Tell our ‘OnLevelFinishedLoading’ function to stop listening for a scene change event as soon as this script is disabled.
 			//Remember to always have an unsubscription for every delegate you subscribe to!
 			SceneManager.sceneLoaded -= OnLevelFinishedLoading;
-	}
-	void destroyedenemy()
-	{
-		
 	}
 	void InitGame()
 	{
@@ -90,8 +87,16 @@ public class GameManager : MonoBehaviour
 	{
 		enemies.Clear ();
 		enabled = false;
-		healthText.text = "Health:0 You Lose";
+		if (EndGameText == null)
+			EndGameText = GameObject.Find ("EndGame Text").GetComponent<Text> ();
+		EndGameText.gameObject.SetActive (true);
+		//Wait (100);
 		SceneManager.LoadScene (0, LoadSceneMode.Single);
+		Destroy(gameObject);
+	}
+	IEnumerator Wait (int Seconds)
+	{
+		yield return new WaitForSeconds (Seconds);
 	}
 	IEnumerator MoveEnemies()
 	{

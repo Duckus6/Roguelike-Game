@@ -51,7 +51,6 @@ public class Player : MovingObject
 			//possible sound effects
 		}
 		CheckifGameOver ();
-		List<Enemy> listenemies = GameManager.instance.enemies;
 		GameManager.instance.playersTurn = false;
 	}
 	protected override void OnCantMove <T> (T component)
