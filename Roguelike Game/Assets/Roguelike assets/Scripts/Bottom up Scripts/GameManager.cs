@@ -90,6 +90,8 @@ public class GameManager : MonoBehaviour
 	{
 		enemies.Clear ();
 		enabled = false;
+		healthText.text = "Health:0 You Lose";
+		SceneManager.LoadScene (0, LoadSceneMode.Single);
 	}
 	IEnumerator MoveEnemies()
 	{
