@@ -90,13 +90,15 @@ public class GameManager : MonoBehaviour
 		if (EndGameText == null)
 			EndGameText = GameObject.Find ("EndGame Text").GetComponent<Text> ();
 		EndGameText.gameObject.SetActive (true);
-		//Wait (100);
+		healthText.text = "Health:0";
+		Invoke("loadscene",3);
+
+
+	}
+	void loadscene ()
+	{
 		SceneManager.LoadScene (0, LoadSceneMode.Single);
 		Destroy(gameObject);
-	}
-	IEnumerator Wait (int Seconds)
-	{
-		yield return new WaitForSeconds (Seconds);
 	}
 	IEnumerator MoveEnemies()
 	{
