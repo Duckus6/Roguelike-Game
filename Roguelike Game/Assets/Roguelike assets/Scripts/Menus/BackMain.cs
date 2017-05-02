@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class BackMain : MonoBehaviour {
 	public void Load () {
-		// Only specifying the sceneName or sceneBuildIndex will load the scene with the Single mode
+		//Loads the Main Menu scene
 		SceneManager.LoadScene (0, LoadSceneMode.Single);
+
 	}
 }

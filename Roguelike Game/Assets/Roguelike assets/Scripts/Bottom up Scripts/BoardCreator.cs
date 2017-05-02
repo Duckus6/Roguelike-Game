@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class BoardCreator : MonoBehaviour
 {
-	// The type of tile that will be laid in a specific position.
+	// The type of tile that will be laid in a specific position
 	public enum TileType
 	{
 		Wall, Floor,
@@ -39,8 +39,8 @@ public class BoardCreator : MonoBehaviour
 
 	public void Setup (int level)
 	{
-		
-		//Create the board holder.
+
+		//Create the board holder
 		boardHolder = new GameObject("BoardHolder");
 		//Sets up the rest of the board, tiles and instantiates the player/enemy prefabs
 		SetupTilesArray ();
@@ -57,7 +57,7 @@ public class BoardCreator : MonoBehaviour
 
 	void SetupTilesArray ()
 	{
-		//Set the tiles array to the correct width.
+		//Set the tiles array to the correct width
 		tiles = new TileType[columns][];
 
 		//sets each tile array to the correct height
@@ -70,47 +70,47 @@ public class BoardCreator : MonoBehaviour
 
 	void CreateRoomsAndCorridors ()
 	{
-		//Create the rooms array with a random size specified earlier.
+		//Create the rooms array with a random size specified earlier
 		rooms = new Room[numRooms.Random];
 		int roomlen = rooms.Length;
 		//One less corridor than rooms so all rooms connecting
 		corridors = new Corridor[rooms.Length - 1];
 
-		//Creates the first room and corridor.
+		//Creates the first room and corridor
 		rooms[0] = new Room ();
 		corridors[0] = new Corridor ();
 
 		//Setup the first room, No previous corridor so no parameter past
 		rooms[0].SetupRoom(roomWidth, roomHeight, columns, rows);
 
-		//Setup the first corridor using the first room.
+		//Setup the first corridor using the first room
 		corridors[0].SetupCorridor(rooms[0], corridorLength, roomWidth, roomHeight, columns, rows, true);
-                //Creates all remaining rooms and corridors
+		//Creates all remaining rooms and corridors
 		for (int i = 1; i < roomlen; i++)
 		{
 			rooms[i] = new Room ();
 
-			
+
 			rooms[i].SetupRoom (roomWidth, roomHeight, columns, rows, corridors[i - 1]);
 
-			
+
 			if (i < corridors.Length)
 			{
-				
+
 				corridors[i] = new Corridor ();
 
-				
+
 				corridors[i].SetupCorridor(rooms[i], corridorLength, roomWidth, roomHeight, columns, rows, false);
 			}
-                        // Instantiates the player  at approx the middke board
+			// Instantiates the player  at approx the middle board
 			if (i == Mathf.Floor(roomlen *.5f))
 			{
 				Vector3 playerPos = new Vector3 (rooms[i].xPos, rooms[i].yPos, 0);
 				Instantiate(player, playerPos, Quaternion.identity);
 			}
 		}
-		
-		
+
+		//instantiates enemies at random points on the board provided its not the same room as the player
 		for (int j = 0; j < numEnemies.Random; j++) 
 		{
 			int x = Random.Range (0, roomlen - 1);
@@ -125,26 +125,26 @@ public class BoardCreator : MonoBehaviour
 
 	}
 
-        // Sets up tiles for the rooms
+	//Sets up tiles for the rooms
 	void SetTilesValuesForRooms ()
 	{
-		
+
 		for (int i = 0; i < rooms.Length; i++)
 		{
 			Room currentRoom = rooms[i];
 
-			
+
 			for (int j = 0; j < currentRoom.roomWidth; j++)
 			{
 				int xCoord = currentRoom.xPos + j;
 
-				
+
 				for (int k = 0; k < currentRoom.roomHeight; k++)
 				{
 					int yCoord = currentRoom.yPos + k;
-					
+
 					tiles[xCoord][yCoord] = TileType.Floor;
-				}	//if ((i == rooms.Length-1)&&(j == currentRoom.roomHeight
+				}	
 			}
 		}
 	}
@@ -152,20 +152,20 @@ public class BoardCreator : MonoBehaviour
 
 	void SetTilesValuesForCorridors ()
 	{
-		// Go through every corridor...
+		//Sets up tiles for the corridors
 		for (int i = 0; i < corridors.Length; i++)
 		{
 			Corridor currentCorridor = corridors[i];
 
-			// and go through it's length.
+			//Following for loop used if there are going to be different tiles for the corridor than the rooms
 			for (int j = 0; j < currentCorridor.corridorLength; j++)
 			{
-				// Start the coordinates at the start of the corridor.
+				// Start the coordinates at the start of the corridor
 				int xCoord = currentCorridor.startXPos;
 				int yCoord = currentCorridor.startYPos;
 
 				// Depending on the direction, add or subtract from the appropriate
-				// coordinate based on how far through the length the loop is.
+				// coordinate based on how far through the length the loop is
 				switch (currentCorridor.direction)
 				{
 				case Direction.North:
@@ -182,7 +182,7 @@ public class BoardCreator : MonoBehaviour
 					break;
 				}
 
-				// Set the tile at these coordinates to Floor.
+				//Set the tile at these coordinates to Floor
 				tiles[xCoord][yCoord] = TileType.Floor;
 			}
 		}
@@ -191,18 +191,16 @@ public class BoardCreator : MonoBehaviour
 
 	void InstantiateTiles ()
 	{
-		// Go through all the tiles in the jagged array...
+		//Instantiates the entire board
 		for (int i = 0; i < tiles.Length; i++)
 		{
 			for (int j = 0; j < tiles[i].Length; j++)
 			{
-				// ... and instantiate a floor tile for it.
+				//Instantiates everything originally as a floor tile
 				InstantiateFromArray (floorTiles, i, j);
-
-				// If the tile type is Wall...
+				//Then checks if it should be a wall tile and if it should be then instantiates it as that
 				if (tiles[i][j] == TileType.Wall)
 				{
-					// ... instantiate a wall over the top.
 					InstantiateFromArray (wallTiles, i, j);
 				}
 			}
@@ -212,47 +210,47 @@ public class BoardCreator : MonoBehaviour
 
 	void InstantiateOuterWalls ()
 	{
-		// The outer walls are one unit left, right, up and down from the board.
+		//The outer walls are one unit left, right, up and down from the board
 		float leftEdgeX = -1f;
 		float rightEdgeX = columns + 0f;
 		float bottomEdgeY = -1f;
 		float topEdgeY = rows + 0f;
 
-		// Instantiate both vertical walls (one on each side).
+		//Instantiate both vertical walls (one on each side)
 		InstantiateVerticalOuterWall (leftEdgeX, bottomEdgeY, topEdgeY);
 		InstantiateVerticalOuterWall(rightEdgeX, bottomEdgeY, topEdgeY);
 
-		// Instantiate both horizontal walls, these are one in left and right from the outer walls.
+		//Instantiate both horizontal walls, these are one in left and right from the outer walls
 		InstantiateHorizontalOuterWall(leftEdgeX + 1f, rightEdgeX - 1f, bottomEdgeY);
 		InstantiateHorizontalOuterWall(leftEdgeX + 1f, rightEdgeX - 1f, topEdgeY);
 	}
 
-
+	//Instantiates tiles at all the needed Y coords at a single X coord
 	void InstantiateVerticalOuterWall (float xCoord, float startingY, float endingY)
 	{
-		// Start the loop at the starting value for Y.
+
 		float currentY = startingY;
 
-		// While the value for Y is less than the end value...
+
 		while (currentY <= endingY)
 		{
-			// ... instantiate an outer wall tile at the x coordinate and the current y coordinate.
+			//Instantiate an outer wall tile at the x coordinate and the current y coordinate
 			InstantiateFromArray(outerWallTiles, xCoord, currentY);
 
 			currentY++;
 		}
 	}
 
-
+	//Instantiates tiles in a similar fashion to the previous function except with the roles of X and Y coords swapped
 	void InstantiateHorizontalOuterWall (float startingX, float endingX, float yCoord)
 	{
-		// Start the loop at the starting value for X.
+
 		float currentX = startingX;
 
-		// While the value for X is less than the end value...
+
 		while (currentX <= endingX)
 		{
-			// ... instantiate an outer wall tile at the y coordinate and the current x coordinate.
+
 			InstantiateFromArray (outerWallTiles, currentX, yCoord);
 
 			currentX++;
@@ -262,16 +260,16 @@ public class BoardCreator : MonoBehaviour
 
 	void InstantiateFromArray (GameObject[] prefabs, float xCoord, float yCoord)
 	{
-		// Create a random index for the array.
+		//Create a random index for the array
 		int randomIndex = Random.Range(0, prefabs.Length);
 
-		// The position to be instantiated at is based on the coordinates.
+		//The position to be instantiated at is based on the coordinates
 		Vector3 position = new Vector3(xCoord, yCoord, 0f);
 
-		// Create an instance of the prefab from the random index of the array.
+		//Create an instance of the prefab from the random index of the array
 		GameObject tileInstance = Instantiate(prefabs[randomIndex], position, Quaternion.identity) as GameObject;
 
-		// Set the tile's parent to the board holder.
+		//Set the tile's parent to the board holder
 		tileInstance.transform.parent = boardHolder.transform;
 	}
 }

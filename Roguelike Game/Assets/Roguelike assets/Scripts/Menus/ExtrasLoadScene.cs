@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class ExtrasLoadScene : MonoBehaviour {
 	public void Load () {
-		// Only specifying the sceneName or sceneBuildIndex will load the scene with the Single mode
+		//Loads the Extras scene
 		SceneManager.LoadScene (1, LoadSceneMode.Single);
 	}
 }

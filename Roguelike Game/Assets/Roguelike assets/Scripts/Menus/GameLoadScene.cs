@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class GameLoadScene : MonoBehaviour {
 	public void Load () {
-		// Only specifying the sceneName or sceneBuildIndex will load the scene with the Single mode
+		//Loads the main game scene
 		SceneManager.LoadScene (3, LoadSceneMode.Single);
 	}
 }
