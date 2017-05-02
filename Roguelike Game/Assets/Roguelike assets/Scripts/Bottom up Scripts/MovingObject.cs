@@ -36,8 +36,6 @@ public abstract class MovingObject : MonoBehaviour
 		// Calculate end position based on the direction parameters passed in when calling Move.
 		Vector2 end = start + Vect;
 		//Disable the boxCollider so that linecast doesn't hit this object's own collider.
-		//if (boxCollider)
-		//	Debug.Log ("No Error");
 		boxCollider.enabled = false;
 
 		//Cast a line from start point to end point checking collision on blockingLayer.
@@ -68,7 +66,7 @@ public abstract class MovingObject : MonoBehaviour
 		//Square magnitude is used instead of magnitude because it's computationally cheaper.
 		float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
 
-		//While that distance is greater than a very small amount (Epsilon, almost zero):
+		//While that distance is greater than a very small number (Epsilon, almost zero):
 		while(sqrRemainingDistance > float.Epsilon)
 		{
 			//Find a new position proportionally closer to the end, based on the moveTime
