@@ -50,6 +50,7 @@ public class Room
 			// This must be clamped to ensure that the room doesn't go off the board.
 			xPos = Mathf.Clamp (xPos, 0, columns - roomWidth);
 			break;
+		//Similar code for other cases but slightly different to match the correct direction
 		case Direction.East:
 			roomWidth = Mathf.Clamp(roomWidth, 1, columns - corridor.EndPositionX);
 			xPos = corridor.EndPositionX;

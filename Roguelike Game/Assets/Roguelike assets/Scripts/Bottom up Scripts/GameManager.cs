@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
 	public float playerEXP = 0f;
 	//Text objects
 	public Text healthText;
-	public Text EndGameText;
+	public GameObject EndGame;
 	private Text levelText;
 	//Used for movement
 	[HideInInspector] public bool playersTurn = true;
@@ -101,9 +101,9 @@ public class GameManager : MonoBehaviour
 		enemies.Clear ();
 		enabled = false;
 		//Used for same reason as healthText == null
-		if (EndGameText == null)
-			EndGameText = GameObject.Find ("EndGame Text").GetComponent<Text> ();
-		EndGameText.gameObject.SetActive (true);
+		if (EndGame == null)
+			EndGame = GameObject.Find ("EndGame");
+		EndGame.gameObject.SetActive (true);
 		healthText.text = "Health:0";
 		//Used so Game Over text is displayed for more than a fraction of a second
 		Invoke("loadscene",3);
